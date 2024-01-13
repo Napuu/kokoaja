@@ -7,6 +7,11 @@ from parsers import parse_telegraf_string
 
 app = FastAPI()
 
+@app.get("/debug")
+async def debug(request: Request):
+    print(request.client, request.headers)
+    return "hello"
+
 @app.post("/telegraf_string/")
 async def create_measurement(request: Request):
     body = await request.body()
