@@ -38,4 +38,4 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 async def get_dashboard(request: Request):
     generate_graphs() 
     # jinja templatea ei oikeastaan ole käytetty tällä hetkellä mihinkään mutta antaa olla
-    return templates.TemplateResponse("dashboard.html")
+    return templates.TemplateResponse("dashboard.html", {'request':request})

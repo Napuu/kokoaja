@@ -43,7 +43,7 @@ def generate_graphs():
     grouped = measurements.groupby(by='mac')
 
     window_size = 2
-    locale.setlocale(locale.LC_TIME, 'fi_FI')
+    locale.setlocale(locale.LC_TIME, 'fi_FI.utf-8')
 
 
     # kylpyhuone kosteus
