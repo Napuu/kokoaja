@@ -32,6 +32,15 @@ async def create_measurement(request: Request):
 
     return {"message": "Measurement recorded successfully"}
 
+@app.post("/write", dependencies=[Depends(check_ip_is_allowed)])
+async def create_measurement(request: Request):
+    body = await request.body()
+    data = body.decode()
+
+    insert_data(ruuvi_measurement, parse_telegraf_string(data))
+
+    return {"message": "Measurement recorded successfully"}
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/dashboard/", response_class=HTMLResponse)
