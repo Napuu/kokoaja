@@ -36,8 +36,8 @@ def debounce(interval):
 @debounce(60)
 def generate_graphs():
     print("generating graphs")
-    olohuone = "D2:69:86:92:0F:82"
-    kylpyhuone = "DE:8A:08:E9:0B:9D"
+    olohuone = "D26986920F82"
+    kylpyhuone = "DE8A08E90B9D"
     measurements = get_measurements()
 
     grouped = measurements.groupby(by='mac')

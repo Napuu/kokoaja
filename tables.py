@@ -18,11 +18,11 @@ ruuvi_measurement = Table(
     Column('temperature', Float),
     Column('tx_power', Integer),
     Column('move', Integer),
-    Column('accelZ', Float),
+    Column('accelz', Float),
     Column('epoch', TIMESTAMP),
     Column('txdbm', Integer),
-    Column('accelY', Float),
+    Column('accely', Float),
     Column('sequence', BigInteger),
-    Column('accelX', Float),
+    Column('accelx', Float),
     Column('battery', Float)
 )
