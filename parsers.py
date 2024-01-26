@@ -10,5 +10,4 @@ def parse_telegraf_string(input: str) -> dict:
 
     data = dict(item.split('=') for item in columns_part.replace(' ', ',').split(','))
     data['time'] = timestamp
-
-    return data
+    return {key.lower(): value for key, value in data.items()}
