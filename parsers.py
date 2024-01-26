@@ -6,7 +6,7 @@ def parse_telegraf_string(input: str) -> dict:
     columns_part = columns_with_timestamp[0]
     timestamp = columns_with_timestamp[1]
 
-    timestamp = datetime.utcfromtimestamp(int(timestamp) / 1e9)
+    timestamp = datetime.utcfromtimestamp(int(timestamp))
 
     data = dict(item.split('=') for item in columns_part.replace(' ', ',').split(','))
     data['time'] = timestamp
