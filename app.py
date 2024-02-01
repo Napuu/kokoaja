@@ -39,6 +39,7 @@ async def create_measurement(request: Request):
     data = body.decode()
 
     print(data)
+    insert_influx(data)
     insert_data(ruuvi_measurement, parse_telegraf_string(data))
 
     return {"message": "Measurement recorded successfully"}
