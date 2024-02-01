@@ -24,3 +24,5 @@ def insert_influx(data: str):
     }
 
     response = requests.post(url, headers=headers, data=data)
+
+    print(f'Status Code: {response.status_code}')
