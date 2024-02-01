@@ -2,7 +2,9 @@ from os import environ
 
 variables = {
     "DB_URL": "DB_URL",
-    "IP_WHITELIST": "IP_WHITELIST"
+    "IP_WHITELIST": "IP_WHITELIST",
+    "INFLUX_TOKEN": "INFLUX_TOKEN",
+    "INFLUX_HOST": "INFLUX_HOST"
 }
 
 def check_env_variables() -> list:
@@ -17,3 +19,9 @@ def get_ip_whitelist() -> list[str]:
 
 def get_db_url() -> str:
     return environ[variables["DB_URL"]]
+
+def get_influx_config() -> dict:
+    return {
+        "INFLUX_TOKEN": environ["INFLUX_TOKEN"],
+        "INFLUX_HOST": environ["INFLUX_HOST"]
+    }
