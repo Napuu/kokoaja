@@ -11,7 +11,6 @@ if (missing := check_env_variables()) and len(missing) > 0:
     raise Exception(f"Environment variables missing: {', '.join(missing)}")
 
 from db import insert_influx
-from parsers import parse_telegraf_string
 
 templates = Jinja2Templates(directory="templates")
 
