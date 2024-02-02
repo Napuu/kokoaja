@@ -10,11 +10,10 @@ from fastapi.responses import HTMLResponse
 if (missing := check_env_variables()) and len(missing) > 0:
     raise Exception(f"Environment variables missing: {', '.join(missing)}")
 
-from db import insert_data, get_measurements, insert_influx
+from db import insert_influx
 from parsers import parse_telegraf_string
 
 templates = Jinja2Templates(directory="templates")
-
 
 app = FastAPI()
 
@@ -28,9 +27,7 @@ async def create_measurement(request: Request):
     body = await request.body()
     data = body.decode()
 
-    print(data)
     insert_influx(data)
-    insert_data(ruuvi_measurement, parse_telegraf_string(data))
 
     return {"message": "Measurement recorded successfully"}
 

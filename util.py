@@ -8,7 +8,7 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import pandas as pd
 import locale
-from db import get_measurements, get_measurements_influx
+from db import get_measurements_influx
 
 from config import get_ip_whitelist
 
@@ -34,7 +34,7 @@ def debounce(interval):
         return wrapper
     return decorator
 
-def plot_combined_data(grouped, mac_addresses, measurement, window_size, plot_title, y_label, file_name):
+def plot_combined_data(grouped, mac_addresses, measurement, plot_title, y_label, file_name):
     fig, ax = plt.subplots(figsize=(10, 6))
 
     # Loop through each room's MAC address
@@ -69,14 +69,10 @@ def generate_graphs():
     }
     locale.setlocale(locale.LC_TIME, 'fi_FI.utf-8')
     measurements = get_measurements_influx()
-    print(measurements)
-
-    print(get_measurements_influx())
 
     grouped = measurements.groupby(by='mac')
-    window_size = 2
 
-    plot_combined_data(grouped, room_data, 'temperature', window_size, 'Lämpötila sisällä', '°C', 'static/temperature_combined.png')
+    plot_combined_data(grouped, room_data, 'temperature', 'Lämpötila sisällä', '°C', 'static/temperature_combined.png')
 
-    plot_combined_data(grouped, room_data, 'humidity', window_size, 'Kosteus sisällä', '%', 'static/humidity_combined.png')
+    plot_combined_data(grouped, room_data, 'humidity', 'Kosteus sisällä', '%', 'static/humidity_combined.png')
 
