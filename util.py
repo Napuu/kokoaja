@@ -58,6 +58,7 @@ def plot_combined_data(grouped, mac_addresses, measurement, plot_title, y_label,
     ax.legend()
     fig.autofmt_xdate()
     plt.savefig(file_name, format='png', dpi=300)
+    plt.close(fig)
 
 @debounce(60)
 def generate_graphs():
