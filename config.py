@@ -7,7 +7,8 @@ class Env():
     DB_URL = environ["DB_URL"]
     IP_WHITELIST = environ["IP_WHITELIST"]
     INFLUX_TOKEN = environ["INFLUX_TOKEN"]
-    INFLUX_URL = environ["INFLUX_URL"]
+    INFLUX_READ_URL = environ["INFLUX_READ_URL"]
+    INFLUX_WRITE_URL = environ["INFLUX_WRITE_URL"]
 
 def check_env_variables() -> list:
     missing = []

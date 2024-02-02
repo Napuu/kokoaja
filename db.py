@@ -17,8 +17,8 @@ def get_measurements():
         return pd.read_sql("select * FROM public.aggregate_5min_view;", conn)
 
 def insert_influx(data: str):
-    url = f'{Env.INFLUX_URL}/api/v2/write?org=org1&bucket=rm&precision=s'
-    print("INFLUX_URL:", Env.INFLUX_URL)
+    url = f'{Env.INFLUX_WRITE_URL}'
+    print("INFLUX_READ_URL:", Env.INFLUX_READ_URL)
     headers = {
         'Authorization': f'Token {Env.INFLUX_TOKEN}',
         'Content-Type': 'text/plain'
@@ -45,9 +45,9 @@ def get_measurements_influx():
         |> yield(name: "5m_averaged_fields")
     '''
     env = Env
-    print("INFLUX_URL:, ping", Env.INFLUX_URL, env.INFLUX_URL)
+    print("INFLUX_READ_URL:, ping", Env.INFLUX_READ_URL, env.INFLUX_READ_URL)
     # Make the request
-    response = requests.post(Env.INFLUX_URL, headers=headers, data=query)
+    response = requests.post(Env.INFLUX_READ_URL, headers=headers, data=query)
     # print(response)
     # Check for errors
     response.raise_for_status()
