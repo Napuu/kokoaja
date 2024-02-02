@@ -40,8 +40,7 @@ def plot_combined_data(grouped, mac_addresses, measurement, window_size, plot_ti
     # Loop through each room's MAC address
     for mac, label in mac_addresses.items():
         df = grouped.get_group(mac).copy()
-        df[f'avg_{measurement}_smoothed'] = df[f'avg_{measurement}'].rolling(window=window_size).mean()
-        ax.plot(df['time_interval'], df[f'avg_{measurement}_smoothed'], linestyle='-', markersize=2, label=label)
+        ax.plot(df['time'], df[measurement], linestyle='-', markersize=2, label=label)
 
     # Setting labels and title
     ax.set_title(plot_title)
@@ -50,8 +49,8 @@ def plot_combined_data(grouped, mac_addresses, measurement, window_size, plot_ti
     ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, pos: f'{x}{y_label}'))
 
     # Set dynamic y-axis limits
-    overall_min = grouped[f'avg_{measurement}'].min().min()
-    overall_max = grouped[f'avg_{measurement}'].max().max()
+    overall_min = grouped[measurement].min().min()
+    overall_max = grouped[measurement].max().max()
     overall_range = overall_max - overall_min
     ax.set_ylim(overall_min - overall_range * 0.2, overall_max + overall_range * 0.3)
 
@@ -69,7 +68,7 @@ def generate_graphs():
         "E80742629233": "Makuuhuone"
     }
     locale.setlocale(locale.LC_TIME, 'fi_FI.utf-8')
-    measurements = get_measurements()
+    measurements = get_measurements_influx()
     print(measurements)
 
     print(get_measurements_influx())
