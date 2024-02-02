@@ -9,40 +9,38 @@
             overflow: hidden; /* Avoid scrollbars */
         }
         .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Two columns */
-            grid-template-rows: 1fr 1fr; /* Two rows */
-            gap: 10px; /* Space between cells */
+            display: flex;
+            flex-direction: row;
             height: 100%; /* Full height */
             padding: 10px;
             box-sizing: border-box; /* Include padding in the height */
         }
-        .grid-item {
-            position: relative;
+        .right-column {
+            width: 50%;
             overflow: hidden; /* Ensures no image overflow */
             border: solid 1px black;
             padding: 0; /* Adjust padding for images */
         }
-        .grid-item img {
+        .left-column {
+            width: 50%;
+            overflow: hidden; /* Ensures no image overflow */
+            border: solid 1px black;
+            padding: 0; /* Adjust padding for images */
+        }
+        img {
             width: 100%;
-            height: 100%;
+            height: 50%;
             object-fit: contain; /* Adjust this as needed */
         }
     </style>
 </head>
 <body>
     <div class="grid-container">
-        <div class="grid-item">
-            <img src="/static/humidity_kylpyhuone.png"  />
+        <div class="left-column">
         </div>
-        <div class="grid-item">
-            <img src="/static/humidity_olohuone.png"  />
-        </div>
-        <div class="grid-item">
-            <img src="/static/temperature_kylpyhuone.png"  />
-        </div>
-        <div class="grid-item">
-            <img src="/static/temperature_olohuone.png" />
+        <div class="right-column">
+            <img src="/static/humidity_combined.png"  />
+            <img src="/static/temperature_combined.png" />
         </div>
     </div>
 
