@@ -6,7 +6,7 @@ import matplotlib.ticker as mticker
 from datetime import datetime
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
-import pandas as pd
+import polars as pl
 import locale
 from db import get_measurements_influx
 
@@ -39,7 +39,7 @@ def plot_combined_data(grouped, mac_addresses, measurement, plot_title, y_label,
 
     # Loop through each room's MAC address
     for mac, label in mac_addresses.items():
-        df = grouped.get_group(mac).copy()
+        df = grouped.filter(pl.col('mac') == mac)
         ax.plot(df['time'], df[measurement], linestyle='-', markersize=2, label=label)
 
     # Setting labels and title
@@ -49,8 +49,8 @@ def plot_combined_data(grouped, mac_addresses, measurement, plot_title, y_label,
     ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, pos: f'{x}{y_label}'))
 
     # Set dynamic y-axis limits
-    overall_min = grouped[measurement].min().min()
-    overall_max = grouped[measurement].max().max()
+    overall_min = grouped[measurement].min()
+    overall_max = grouped[measurement].max()
     overall_range = overall_max - overall_min
     ax.set_ylim(overall_min - overall_range * 0.2, overall_max + overall_range * 0.3)
 
@@ -71,9 +71,7 @@ def generate_graphs():
     locale.setlocale(locale.LC_TIME, 'fi_FI.utf-8')
     measurements = get_measurements_influx()
 
-    grouped = measurements.groupby(by='mac')
+    plot_combined_data(measurements, room_data, 'temperature', 'Lämpötila sisällä', '°C', 'static/temperature_combined.png')
 
-    plot_combined_data(grouped, room_data, 'temperature', 'Lämpötila sisällä', '°C', 'static/temperature_combined.png')
-
-    plot_combined_data(grouped, room_data, 'humidity', 'Kosteus sisällä', '%', 'static/humidity_combined.png')
+    plot_combined_data(measurements, room_data, 'humidity', 'Kosteus sisällä', '%', 'static/humidity_combined.png')
 

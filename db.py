@@ -1,6 +1,6 @@
 from os import environ
 from config import get_db_url, Env
-import pandas as pd
+import polars as pl
 import requests
 from io import StringIO
 
@@ -31,25 +31,20 @@ def get_measurements_influx():
         |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)
         |> yield(name: "5m_averaged_fields")
     '''
-    env = Env
-    print("INFLUX_READ_URL:, ping", Env.INFLUX_READ_URL, env.INFLUX_READ_URL)
     response = requests.post(Env.INFLUX_READ_URL, headers=headers, data=query)
     response.raise_for_status()
 
-    df = pd.read_csv(StringIO(response.text))  # Skip the first two rows which are headers
+    df = pl.read_csv(StringIO(response.text))
 
-    df = df[["_time", "_value", "_field", "mac"]].rename(columns={
-        "_time": "time",
-        "_value": "value",
-        "_field": "field",
-    })
-    df["time"] = pd.to_datetime(df["time"], format="ISO8601")
-    df_pivoted = df.pivot_table(index=['time', 'mac'], columns='field', values='value', aggfunc='first')
+    df = df.select([
+        pl.col("_time").alias("time"),
+        pl.col("_value").alias("value"),
+        pl.col("_field").alias("field"),
+        pl.col("mac")
+    ])
+    
+    df = df.with_columns(pl.col("time").str.strptime(pl.Datetime))
 
-    df_pivoted.reset_index(inplace=True)
-
-    df_pivoted.columns.name = None
-
-    df_pivoted.columns = [str(col) if not isinstance(col, tuple) else col[1] for col in df_pivoted.columns.values]
+    df_pivoted = df.pivot(index=["time", "mac"], columns="field", values="value")
 
     return df_pivoted

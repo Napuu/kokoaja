@@ -1,7 +1,6 @@
 from datetime import datetime
 from fastapi import FastAPI, HTTPException, Request, Depends
 from fastapi.staticfiles import StaticFiles
-from tables import ruuvi_measurement
 from config import check_env_variables, Env
 from util import check_ip_is_allowed, generate_graphs
 from fastapi.templating import Jinja2Templates
