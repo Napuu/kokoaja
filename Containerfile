@@ -11,6 +11,7 @@ RUN sed -i -e 's/# fi_FI.UTF-8 UTF-8/fi_FI.UTF-8 UTF-8/' /etc/locale.gen \
 
 RUN mkdir -p static
 COPY *.py .
+COPY scrape_targets scrape_targets
 COPY templates templates
 
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
