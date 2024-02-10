@@ -5,6 +5,12 @@ from config import check_env_variables, Env
 from util import check_ip_is_allowed, generate_graphs
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
+import logging
+import os
+
+log_level = os.getenv('LOG_LEVEL', 'INFO').upper()
+
+logging.basicConfig(level=log_level)
 
 if (missing := check_env_variables()) and len(missing) > 0:
     raise Exception(f"Environment variables missing: {', '.join(missing)}")
@@ -24,6 +30,8 @@ async def debug(request: Request):
 async def create_measurement(request: Request):
     body = await request.body()
     data = body.decode()
+
+    logging.debug(f"writing following data: {data}")
 
     insert_influx(data)
 
