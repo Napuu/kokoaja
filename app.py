@@ -33,7 +33,7 @@ async def create_measurement(request: Request):
 
     logging.debug(f"writing following data: {data}")
 
-    insert_influx(data)
+    insert_influx(data, "rm")
 
     return {"message": "Measurement recorded successfully"}
 

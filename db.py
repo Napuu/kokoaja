@@ -4,8 +4,8 @@ import polars as pl
 import requests
 from io import StringIO
 
-def insert_influx(data: str):
-    url = f'{Env.INFLUX_WRITE_URL}'
+def insert_influx(data: str, bucket: str):
+    url = f'{Env.INFLUX_WRITE_URL}&bucket={bucket}'
     print("INFLUX_READ_URL:", Env.INFLUX_READ_URL)
     headers = {
         'Authorization': f'Token {Env.INFLUX_TOKEN}',
