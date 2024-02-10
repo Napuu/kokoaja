@@ -8,6 +8,7 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import polars as pl
 import locale
+from math import isnan
 from db import get_measurements_influx
 
 from config import get_ip_whitelist
@@ -75,3 +76,18 @@ def generate_graphs():
 
     plot_combined_data(measurements, room_data, 'humidity', 'Kosteus sisällä', '%', 'static/humidity_combined.png')
 
+def df_to_influx_line_protocol(df, bucket, **tags):
+    def is_numeric_property(row, key):
+        return key != 'timestamp' and not isnan(row[key])
+    def is_non_null_row(row):
+        return any(row[key] for key in row.keys() if is_numeric_property(row, key))
+    def parse_tags(**tags):
+        return ",".join([f"{key}={value}" for key, value in tags.items()])
+    return [
+        f"{bucket}{',' if len(tags) > 0 else ''}{parse_tags(**tags)} " +
+        ",".join([f"{key}={row[key]}" for key in row.keys() if is_numeric_property(row, key)]) +
+        f" {row['timestamp']}"
+        for row in df.to_dicts()
+        if is_non_null_row(row)
+    ]
+    return lines
